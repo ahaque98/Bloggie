@@ -2,6 +2,7 @@
 using Bloggie.Web.Models.Domain;
 using Bloggie.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bloggie.Web.Controllers
 {
@@ -23,7 +24,7 @@ namespace Bloggie.Web.Controllers
 
         [HttpPost]
         [ActionName("Add")]
-        public IActionResult SubmitTag(AddTagRequest addTagRequest)
+        public async Task<IActionResult> SubmitTag(AddTagRequest addTagRequest)
         {
             if (ModelState.IsValid)
             {
@@ -34,11 +35,11 @@ namespace Bloggie.Web.Controllers
                     DisplayName = addTagRequest.DisplayName
                 };
 
-                _context.Tags.Add(tag);
+                await _context.Tags.AddAsync(tag);
 
                 _logger.LogInformation($"----------Tag {tag.Name} added successfully to Db----------");
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 _logger.LogInformation("----------DB savechanges successfull----------");
             }
@@ -48,17 +49,17 @@ namespace Bloggie.Web.Controllers
 
         [HttpGet]
         [ActionName("List")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            IEnumerable<Tag> tags = _context.Tags.ToList();
+            IEnumerable<Tag> tags = await _context.Tags.ToListAsync();
 
             return View(tags);
         }
 
         [HttpGet]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var tag = _context.Tags.Find(id);
+            var tag = await _context.Tags.FindAsync(id);
 
             if (tag == null)
             {
@@ -82,7 +83,7 @@ namespace Bloggie.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(EditTagRequest editTagRequest)
+        public async Task<IActionResult> Edit(EditTagRequest editTagRequest)
         {
             var tag = new Tag
             {
@@ -91,14 +92,14 @@ namespace Bloggie.Web.Controllers
                 DisplayName = editTagRequest.DisplayName
             };
 
-            var existingTag = _context.Tags.Find(tag.Id);
+            var existingTag = await _context.Tags.FindAsync(tag.Id);
 
             if (existingTag != null)
             {
                 existingTag.Name = tag.Name;
                 existingTag.DisplayName = tag.DisplayName;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Edit", new { id = editTagRequest.Id });
             }
 
@@ -106,14 +107,14 @@ namespace Bloggie.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(EditTagRequest editTagRequest)
+        public async Task<IActionResult> Delete(EditTagRequest editTagRequest)
         {
-            var tag = _context.Tags.Find(editTagRequest.Id);
+            var tag = await _context.Tags.FindAsync(editTagRequest.Id);
 
             if (tag != null)
             {
                 _context.Tags.Remove(tag);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction("List");
             }
             return RedirectToAction("Edit", new { id = editTagRequest.Id });
