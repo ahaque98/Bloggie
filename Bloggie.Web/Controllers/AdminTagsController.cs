@@ -54,5 +54,69 @@ namespace Bloggie.Web.Controllers
 
             return View(tags);
         }
+
+        [HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+            var tag = _context.Tags.Find(id);
+
+            if (tag == null)
+            {
+                _logger.LogInformation($"Tag with ID:{tag} not found in Db");
+                return NotFound();
+            }
+
+            if (tag != null)
+            {
+                var editTagRequest = new EditTagRequest
+                {
+                    Id = tag.Id,
+                    Name = tag.Name,
+                    DisplayName = tag.DisplayName
+                };
+
+                return View(editTagRequest);
+            }
+
+            return View(null);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditTagRequest editTagRequest)
+        {
+            var tag = new Tag
+            {
+                Id = editTagRequest.Id,
+                Name = editTagRequest.Name,
+                DisplayName = editTagRequest.DisplayName
+            };
+
+            var existingTag = _context.Tags.Find(tag.Id);
+
+            if (existingTag != null)
+            {
+                existingTag.Name = tag.Name;
+                existingTag.DisplayName = tag.DisplayName;
+
+                _context.SaveChanges();
+                return RedirectToAction("Edit", new { id = editTagRequest.Id });
+            }
+
+            return RedirectToAction("Edit", new { id = editTagRequest.Id });
+        }
+
+        [HttpPost]
+        public IActionResult Delete(EditTagRequest editTagRequest)
+        {
+            var tag = _context.Tags.Find(editTagRequest.Id);
+
+            if (tag != null)
+            {
+                _context.Tags.Remove(tag);
+                _context.SaveChanges();
+                return RedirectToAction("List");
+            }
+            return RedirectToAction("Edit", new { id = editTagRequest.Id });
+        }
     }
 }

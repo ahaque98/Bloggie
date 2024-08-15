@@ -23,6 +23,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Display Name</th>
+                   <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,10 +33,21 @@
                        <td>@tag.Id</td>
                        <td>@tag.Name</td>
                        <td>@tag.DisplayName</td>
+                       <td>
+                           <a 
+                               asp-area=""
+                               asp-controller="AdminTags" 
+                               asp-action="Edit"
+                               asp-route-id="@tag.Id">
+                           Edit
+                       </a>
+                       </td>
                    </tr> 
                 }
             </tbody>
         </table>
+    }else{
+        <p class="text-danger text-center">No Records Found</p>
     }
 
 </div>
