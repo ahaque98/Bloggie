@@ -12,30 +12,51 @@
 
 
 <div class="container py-5">
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Heading</td>
-                <td>Tags</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var blogPost in Model)
-            {
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@blogPost.Id</td>
-                    <td>@blogPost.Heading</td>
-                    <td>
-                        <div class="d-flex">
-                            @foreach(var tags in blogPost.Tags)
-                            {
-                                <span class="badge bg-info m-1">@tags.Name</span>
-                            }            
-                        </div>
-                    </td>
+                    <td>Id</td>
+                    <td>Heading</td>
+                    <td>Tags</td>
+                    <td>Actions</td>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var blogPost in Model)
+                {
+                    <tr>
+                        <td>@blogPost.Id</td>
+                        <td>@blogPost.Heading</td>
+                        <td>
+                            <div class="d-flex">
+                                @foreach (var tags in blogPost.Tags)
+                                {
+                                    <span class="badge bg-info m-1">@tags.Name</span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-area=""
+                               asp-controller="AdminBlogPosts"
+                               asp-action="Edit"
+                               asp-route-id="@blogPost.Id">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">No Record Found!</h4>
+        <p>If you read this important alert message. Then add some data.</p>
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to call the <code>DbContext</code> to get records from the Database</p>
+    </div>
+    }
 </div>

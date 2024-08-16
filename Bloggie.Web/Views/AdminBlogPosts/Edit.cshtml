@@ -1,0 +1,99 @@
+﻿@model EditBlogPostRequest
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Edit BlogPosts - Admin Functionality </h1>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    @if (Model != null)
+    {
+        <form method="post">
+
+            <div class="mb-3">
+                <label class="form-label">ID</label>
+                <input asp-for="Id" class="form-control" type="text" readonly />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Heading</label>
+                <input asp-for="Heading" class="form-control" type="text" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Page Title</label>
+                <input asp-for="PageTitle" class="form-control" type="text" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Content</label>
+                <textarea asp-for="Content" class="form-control" type="text"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Short Description</label>
+                <input asp-for="ShortDescription" class="form-control" type="text" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Featured Img URL</label>
+                <input asp-for="FeaturedImageUrl" class="form-control" type="text" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">URL Handle</label>
+                <input asp-for="UrlHandle" class="form-control" type="text" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Published Date</label>
+                <input asp-for="PublishedDate" class="form-control" type="date" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Author</label>
+                <input asp-for="Author" class="form-control" type="text" />
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" asp-for="Visible" />
+                <label class="form-check-label">Is Visible?</label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tags</label>
+                <select class="form-select" asp-items="@Model.Tags" asp-for="SelectedTag">
+                </select>
+            </div>
+
+            <div class="mb-3 d-flex ms-2">
+                <button type="submit" class="btn btn-dark">
+                    Update
+                </button>
+                <button class="btn btn-danger"
+                        type="submit"
+                        asp-action="Delete"
+                        asp-controller="AdminBlogPosts"
+                        asp-area="">
+                    Delete
+                </button>
+            </div>
+
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">No Record Found!</h4>
+            <p>If you read this important alert message. Then Try to look at your Controller.</p>
+            <hr>
+            <p class="mb-0">Whenever you need to, be sure to call the <code>DbContext</code> to get records from the Database</p>
+        </div>
+    }
+</div>
