@@ -72,5 +72,14 @@ namespace Bloggie.Web.Controllers
 
             return RedirectToAction("Add");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            // Get all blog posts from repository
+            var blogPosts = await blogPostRepository.GetAllAsync();
+
+            return View(blogPosts);
+        }
     }
 }

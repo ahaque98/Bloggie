@@ -11,6 +11,7 @@ namespace Bloggie.Web.Models.Domain
         public string Name { get; set; }
         public string DisplayName { get; set; }
 
+        //navigation property
         public ICollection<BlogPost> BlogPosts { get; set; }
     }
 }
