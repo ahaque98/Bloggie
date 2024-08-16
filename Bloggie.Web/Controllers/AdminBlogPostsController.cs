@@ -1,4 +1,5 @@
-﻿using Bloggie.Web.Models.ViewModels;
+﻿using Bloggie.Web.Models.Domain;
+using Bloggie.Web.Models.ViewModels;
 using Bloggie.Web.Repositories;
 using Bloggie.Web.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,11 @@ namespace Bloggie.Web.Controllers
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagInterface tagRepository;
-        public AdminBlogPostsController(ITagInterface tagRepository)
+        private readonly IBlogPostInterface blogPostRepository;
+        public AdminBlogPostsController(ITagInterface tagRepository, IBlogPostInterface blogPostRepository)
         {
             this.tagRepository = tagRepository;
+            this.blogPostRepository = blogPostRepository;
         }
 
         [HttpGet]
@@ -35,6 +38,38 @@ namespace Bloggie.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddBlogPostRequest blogPostRequest)
         {
+            //map view model to domain model
+            var model = new BlogPost
+            {
+                Heading = blogPostRequest.Heading,
+                PageTitle = blogPostRequest.PageTitle,
+                Content = blogPostRequest.Content,
+                ShortDescription = blogPostRequest.ShortDescription,
+                FeaturedImageUrl = blogPostRequest.FeaturedImageUrl,
+                UrlHandle = blogPostRequest.UrlHandle,
+                PublishedDate = blogPostRequest.PublishedDate,
+                Author = blogPostRequest.Author,
+                Visible = blogPostRequest.Visible,
+            };
+
+            //map tags from selected tags 
+            var selectedTags = new List<Tag>();
+            foreach (var selectedTagId in blogPostRequest.SelectedTag)
+            {
+                var selectedTagIdAsGuid = Guid.Parse(selectedTagId);
+                var existingTag = await tagRepository.GetAsync(selectedTagIdAsGuid);
+
+                if (existingTag != null)
+                {
+                    selectedTags.Add(existingTag);
+                }
+            }
+
+            //add blog post to repository
+            model.Tags = selectedTags;
+
+            await blogPostRepository.AddAsync(model);
+
             return RedirectToAction("Add");
         }
     }
