@@ -25,7 +25,7 @@
 
         <div class="mb-3">
             <label class="form-label">Content</label>
-            <textarea asp-for="Content" class="form-control" type="text"></textarea>
+            <textarea asp-for="Content" id="content" class="form-control" type="text"></textarea>
         </div>
 
         <div class="mb-3">
@@ -84,7 +84,9 @@
 @section Scripts{
     <script>
 
-        var editor = new FroalaEditor('#Content');
+        var editor = new FroalaEditor('#content', {
+            imageUploadURL:'/api/images'
+        });
 
         const featuredUploadElement = document.getElementById('featuredImageUpload');
         const featuredImageUrlElement = document.getElementById('featuredImageUrl');
