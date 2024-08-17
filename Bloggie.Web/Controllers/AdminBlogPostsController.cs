@@ -37,6 +37,9 @@ namespace Bloggie.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddBlogPostRequest blogPostRequest)
         {
+            //convert publishedDate to UTC
+            blogPostRequest.PublishedDate = DateTime.SpecifyKind(blogPostRequest.PublishedDate, DateTimeKind.Utc);
+
             //map view model to domain model
             var model = new BlogPost
             {
