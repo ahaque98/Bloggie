@@ -10,7 +10,6 @@
     </div>
 </div>
 
-
 <div class="container py-5">
     @if (Model != null && Model.Any())
     {
@@ -52,11 +51,11 @@
     }
     else
     {
-    <div class="alert alert-danger" role="alert">
-        <h4 class="alert-heading">No Record Found!</h4>
-        <p>If you read this important alert message. Then add some data.</p>
-        <hr>
-        <p class="mb-0">Whenever you need to, be sure to call the <code>DbContext</code> to get records from the Database</p>
-    </div>
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">No Record Found!</h4>
+            <p class="alert alert-danger fw-bolder">If you read this important alert message. Then add some data.</p>
+            <hr>
+                <p class="mb-0">Whenever you need to, be sure to call the <strong><code class="text-success fw-bolder">DbContext</code></strong> to get records from the Database</p>
+        </div>
     }
 </div>

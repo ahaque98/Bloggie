@@ -11,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<BloggieDbContext>(options =>
+builder.Services.AddDbContext<BloggieDbContext>(options => 
 {
     options.UseNpgsql(connectionString);
 });
