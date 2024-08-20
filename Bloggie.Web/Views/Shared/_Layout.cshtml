@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,38 +34,67 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a
-                                        class="dropdown-item" 
-                                        asp-area=""
-                                        asp-controller="AdminTags" 
-                                        asp-action="Add">
+                                    <a class="dropdown-item"
+                                       asp-area=""
+                                       asp-controller="AdminTags"
+                                       asp-action="Add">
                                         Add Tag
                                     </a>
-                                    <a
-                                        class="dropdown-item" 
-                                        asp-area=""
-                                        asp-controller="AdminTags" 
-                                        asp-action="List">
+                                    <a class="dropdown-item"
+                                       asp-area=""
+                                       asp-controller="AdminTags"
+                                       asp-action="List">
                                         Show All Tags
                                     </a>
-                                    <a
-                                        class="dropdown-item" 
-                                        asp-area=""
-                                        asp-controller="AdminBlogPosts" 
-                                        asp-action="Add">
+                                    <a class="dropdown-item"
+                                       asp-area=""
+                                       asp-controller="AdminBlogPosts"
+                                       asp-action="Add">
                                         Add Blogpost
                                     </a>
-                                    <a
-                                        class="dropdown-item" 
-                                        asp-area=""
-                                        asp-controller="AdminBlogPosts" 
-                                        asp-action="List">
+                                    <a class="dropdown-item"
+                                       asp-area=""
+                                       asp-controller="AdminBlogPosts"
+                                       asp-action="List">
                                         All Blogposts
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
+
+                    <div class="d-flex align-items-center">
+
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <div class="me-3 text-light">
+                                @User?.Identity?.Name
+                            </div>
+                            <a class="btn btn-light text-dark me-3"
+                               asp-area=""
+                               asp-controller="Account"
+                               asp-action="Logout">
+                                Logout
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-light text-dark me-3"
+                               asp-area=""
+                               asp-controller="Account"
+                               asp-action="Register">
+                                Register
+                            </a>
+                            <a class="btn btn-light text-dark me-3"
+                               asp-area=""
+                               asp-controller="Account"
+                               asp-action="Login">
+                                Login
+                            </a>
+                        }
+
+                    </div>
+
                 </div>
             </div>
         </nav>
