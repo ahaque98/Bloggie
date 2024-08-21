@@ -3,10 +3,11 @@ using Bloggie.Web.Models.ViewModels;
 using Bloggie.Web.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bloggie.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] 
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagInterface tagRepository;
